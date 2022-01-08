@@ -1,0 +1,36 @@
+version: "3"
+ 
+services:
+  scouting-webserver-prod:
+    container_name: "scouting-webserver-production"
+    restart: unless-stopped
+    env_file:
+      - .env
+    build: 
+      context: ./webserver
+      dockerfile: ./Dockerfile.prod
+    expose:
+      - 80
+    ports:
+      - "80:80/tcp"
+  couchdb:
+    container_name: "scouting-couchdb"
+    restart: unless-stopped
+    env_file:
+      - .env
+    build:
+      context: ./couchdb
+      dockerfile: ./Dockerfile
+    expose:
+      - 5984
+    ports:
+      - "5984:5984"
+    environment:
+      - COUCHDB_HOST=couchdb
+      - COUCHDB_PORT=5984
+      - COUCHDB_USER=${COUCHDB_USER}
+      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
+    volumes:
+      - ./couchdb/db.local.ini:/opt/couchdb/etc/local.ini
+      - ./couchdb/data:/opt/couchdb/data
+
