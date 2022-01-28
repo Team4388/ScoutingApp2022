@@ -1,6 +1,12 @@
-.center {
+.welcome {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-  }
+    /* margin-left: auto;
+    margin-right: auto; */
+    width: 100%;
+    text-align: center;
+    margin: auto;
+}
+
+.welcome img {
+  max-width: 100%;
+}

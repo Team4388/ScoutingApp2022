@@ -31,8 +31,11 @@
 .side_drawer a {
     color: white;
     text-decoration: none;
-    font-size: 2rem;
+    font-size: 3rem;
     z-index: 1;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-right: 1000%;
 }
 
 .side_drawer a:hover,

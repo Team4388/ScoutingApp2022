@@ -22,6 +22,7 @@
     color: white;
     text-decoration: none;
     font-size: 2.0rem;
+    height: 100%;
 }
 
 .toolbar_spacer {
@@ -36,19 +37,13 @@
 }
 
 .toolbar_items li {
-    color: white;
-    background-color: #00000000;
-    
-    text-decoration: none;
-    font-size: 1.5rem;
     padding: 0 0.6rem;
 }
 
-.toolbar_items a {
+.toolbar_items button {
     color: white;
     text-decoration: none;
-    padding-top: 0.8rem;
-    padding-bottom: 0.8rem;
+    font-size: 1.5rem;
 }
 
 .toolbar_items a:hover,

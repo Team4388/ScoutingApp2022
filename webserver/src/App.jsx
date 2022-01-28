@@ -16,10 +16,24 @@ import NotFoundPage from "./Pages/NotFoundPage";
 import DashboardPage from "./Pages/DashboardPage/DashboardPage";
 import WelcomePage from "./Pages/WelcomePage";
 import InputPage from "./Pages/InputPage";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core'
+import { Formik, Field, Form } from 'formik';
+import { TextField, Button, Grid, FormRow, Checkbox, Radio, FormControlLabel, FormControl, FormLabel, RadioGroup, IconButton, InputAdornment } from "@material-ui/core";
+import { AddCircleOutline, RemoveCircleOutline} from "@material-ui/icons";
+
+
 
 function App() {
+  const darkTheme = createMuiTheme({
+    
+    // Theme settings
+    palette: {
+      type: "dark",
+    },
+  });
   return (
     <div className="App">
+      <ThemeProvider theme={darkTheme}>
       <DbProvider>
         <Router>
           <Navigation />
@@ -32,6 +46,7 @@ function App() {
           </Routes>
         </Router>
       </DbProvider>
+      </ThemeProvider>
     </div>
   );
 }
