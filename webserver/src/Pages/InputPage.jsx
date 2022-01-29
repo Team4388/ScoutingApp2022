@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocalDb } from "../DbContext";
+import "./InputPage.css"
 // import { Button, Intent, Spinner } from "@blueprintjs/core";
 import FormRenderer from "@data-driven-forms/react-form-renderer/form-renderer";
 import componentTypes from "@data-driven-forms/react-form-renderer/component-types";
@@ -27,7 +28,8 @@ const InputPage = () => {
   const localdb = useLocalDb();
   console.log(localdb);
   return (
-    <div>
+    <div class="maxwidth">
+      <br />
       <Formik
         initialValues={{
           team_number: "",
@@ -47,9 +49,7 @@ const InputPage = () => {
           lower_hub: "0",
           climb_level: "",
           alliance: "",
-          notes_good: "",
-          notes_struggle: "",
-          notes_cant: "",
+          defence: ""
         }}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setTimeout(() => {
@@ -61,17 +61,17 @@ const InputPage = () => {
               .then((result) => {
                 alert("Input Saved Successfully!");
                 console.log(result);
+                console.log(localdb);
               })
               .catch((err) => {
                 console.log("Failed To Save Input!");
                 alert(err);
               });
             // alert(JSON.stringify(values, null, 2));
-            resetForm();
+            // resetForm(); //Hah tobad
             setSubmitting(false);
           }, 400);
-        }}
-      >
+        }}>
         {({
           values,
           setValues,
@@ -82,14 +82,14 @@ const InputPage = () => {
           handleSubmit,
           isSubmitting,
         }) => (
-          <Form>
+
+          <Form >
             <Grid
               container
               direction="row"
               justify="center"
               alignItems="flex-start"
-              spacing={3}
-            >
+              spacing={3}>
               <Grid item>
                 {" "}
                 <Field
@@ -119,9 +119,11 @@ const InputPage = () => {
                           type="radio"
                           name="alliance"
                           value="red"
+                          style={{ fontSize: 50 }}
                         />
                       }
                       label="Red"
+
                     />
                     <FormControlLabel
                       control={
@@ -138,23 +140,21 @@ const InputPage = () => {
                 </FormControl>
               </Grid>
             </Grid>
-            <hr />
+
             <div />
             <Grid
               container
               direction="row"
               justify="center"
               alignItems="flex-start"
-              spacing={3}
-            >
+              spacing={3}>
               <Grid item>
                 <Grid
                   container
                   direction="column"
                   justify="flex-start"
                   alignItems="center"
-                  spacing={3}
-                >
+                  spacing={3}>
                   <Grid item>
                     <InputNumberField
                       name="upper_hub_auto"
@@ -176,11 +176,10 @@ const InputPage = () => {
                   direction="column"
                   justify="flex-start"
                   alignItems="center"
-                  spacing={3}
-                >
+                  spacing={3}>
                   <Grid item>
                     {" "}
-                    <InputNumberField name="upper_hub" label="Lower Hub" />{" "}
+                    <InputNumberField name="upper_hub" label="Upper Hub" />{" "}
                   </Grid>
                   <Grid item>
                     {" "}
@@ -189,15 +188,14 @@ const InputPage = () => {
                 </Grid>{" "}
               </Grid>
             </Grid>
-            <hr />
+
             <div />
             <Grid
               container
               direction="row"
               justify="center"
               alignItems="flex-start"
-              spacing={3}
-            >
+              spacing={3}>
               <Grid item>
                 <FormControl component="fieldset">
                   <FormLabel component="legend">Climbing</FormLabel>
@@ -261,44 +259,117 @@ const InputPage = () => {
                 </FormControl>
               </Grid>
             </Grid>
-            <hr />
+
             <div />
             <Grid
               container
               direction="row"
               justify="center"
               alignItems="flex-start"
-              spacing={3}
-            >
+              spacing={3}>
               <Grid item>
-                <Grid item>
-                  <InputNumberField name="fouls" label="Fouls" />{" "}
-                </Grid>{" "}
-                <Grid item>
-                  <InputNumberField name="fouls_tech" label="Tech Fouls" />{" "}
-                </Grid>{" "}
+                <Grid
+                  container
+                  direction="column"
+                  justify="flex-start"
+                  alignItems="center"
+                  spacing={3}>
+                  <Grid item>
+                    <InputNumberField name="fouls" label="Fouls" />{" "}
+                  </Grid>{" "}
+                  <Grid item>
+                    <InputNumberField name="fouls_tech" label="Tech Fouls" />{" "}
+                  </Grid>{" "}
+                </Grid>
               </Grid>
               <Grid item>
-                <Grid item>
-                  <InputNumberField name="red_cards" label="Red Cards" />{" "}
-                </Grid>{" "}
-                <Grid item>
-                  <InputNumberField name="yellow_cards" label="Yellow Cards" />{" "}
+                <Grid
+                  container
+                  direction="column"
+                  justify="flex-start"
+                  alignItems="center"
+                  spacing={3}>
+                  <Grid item>
+                    <InputNumberField name="red_cards" label="Red Cards" />{" "}
+                  </Grid>{" "}
+                  <Grid item>
+                    <InputNumberField name="yellow_cards" label="Yellow Cards" />{" "}
+                  </Grid>
+                  <Grid item>
+                    {/* <InputNumberField name="disables" label="Disables" />{" "} */}
+                  </Grid>{" "}
                 </Grid>
-                <Grid item>
-                  {/* <InputNumberField name="disables" label="Disables" />{" "} */}
-                </Grid>{" "}
               </Grid>
             </Grid>
-            <hr />
+
             <div />
             <Grid
               container
               direction="row"
               justify="center"
               alignItems="flex-start"
-              spacing={3}
-            >
+              spacing={3}>
+              <Grid item>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Defense</FormLabel>
+                  <RadioGroup aria-label="Defense" name="defence" row>
+                    <FormControlLabel
+                      control={
+                        <Field
+                          as={Radio}
+                          type="radio"
+                          name="defence"
+                          value="0"
+                        />
+                      }
+                      label="N/A"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Field
+                          as={Radio}
+                          type="radio"
+                          name="defence"
+                          value="1"
+                        />
+                      }
+                      label="Poor"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Field
+                          as={Radio}
+                          type="radio"
+                          name="defence"
+                          value="2"
+                        />
+                      }
+                      label="Good"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Field
+                          as={Radio}
+                          type="radio"
+                          name="defence"
+                          value="3"
+                        />
+                      }
+                      label="Exceptional"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+            </Grid>
+
+            <div />
+
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="flex-start"
+              spacing={3}>
               <Grid item>
                 {" "}
                 <Field
@@ -346,8 +417,7 @@ const InputPage = () => {
               direction="row"
               justify="center"
               alignItems="flex-start"
-              spacing={3}
-            >
+              spacing={3}>
               <Button type="submit" disabled={isSubmitting}>
                 {" "}
                 Submit{" "}

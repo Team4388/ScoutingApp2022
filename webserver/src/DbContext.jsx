@@ -16,7 +16,7 @@ export function DbProvider({ children }) {
   const [localdb, setLocaldb] = useState(new PouchDB("testdata"));
   //used in development server
   const [remotedb, setRemotedb] = useState(
-    new PouchDB(window.location.hostname + ":5984/testdata", {
+    new PouchDB("http://" + window.location.hostname + ":5984/testdata", {
       skip_setup: true,
       auth: {
         username: "scouting",
@@ -40,10 +40,12 @@ export function DbProvider({ children }) {
       live: true,
       retry: true,
     })
-    .on("change", function (change) {})
-    .on("paused", function (info) {})
-    .on("active", function (info) {})
-    .on("error", function (err) {});
+    .on("change", function (change) { })
+    .on("paused", function (info) { })
+    .on("active", function (info) { })
+    .on("error", function (err) {
+      console.error(err);
+    });
 
   return (
     <LocalDbContext.Provider value={localdb}>

@@ -19,33 +19,41 @@ import InputPage from "./Pages/InputPage";
 import { createMuiTheme, ThemeProvider } from '@material-ui/core'
 import { Formik, Field, Form } from 'formik';
 import { TextField, Button, Grid, FormRow, Checkbox, Radio, FormControlLabel, FormControl, FormLabel, RadioGroup, IconButton, InputAdornment } from "@material-ui/core";
-import { AddCircleOutline, RemoveCircleOutline} from "@material-ui/icons";
+import { AddCircleOutline, RemoveCircleOutline } from "@material-ui/icons";
 
 
 
 function App() {
   const darkTheme = createMuiTheme({
-    
+
     // Theme settings
     palette: {
       type: "dark",
     },
+    typography: {
+      fontSize: 18
+    }
   });
+  const styles = {
+    bigbution: {
+
+    }
+  }
   return (
     <div className="App">
       <ThemeProvider theme={darkTheme}>
-      <DbProvider>
-        <Router>
-          <Navigation />
-          <Routes>
-            <Route path="/" element={<WelcomePage />} />
-            <Route path="/Dashboard" element={<DashboardPage />} />
-            <Route path="/Input" element={<InputPage />} />
-            <Route path="/404" element={<NotFoundPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Router>
-      </DbProvider>
+        <DbProvider>
+          <Router>
+            <Navigation />
+            <Routes>
+              <Route path="/" element={<WelcomePage />} />
+              <Route path="/Dashboard" element={<DashboardPage />} />
+              <Route path="/Input" element={<InputPage />} />
+              <Route path="/404" element={<NotFoundPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Router>
+        </DbProvider>
       </ThemeProvider>
     </div>
   );
