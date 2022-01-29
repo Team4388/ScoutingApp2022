@@ -1,5 +1,6 @@
 import PouchDB from "pouchdb";
 import React, { useContext, useState } from "react";
+import { ProcessedDataBucketContext } from "./ProcessedDataBucketContext";
 
 const LocalDbContext = React.createContext();
 const RemoteDbContext = React.createContext();
@@ -40,7 +41,10 @@ export function DbProvider({ children }) {
       live: true,
       retry: true,
     })
-    .on("change", function (change) { })
+    .on("change", function (change) {
+      const pdb = React.useContext(ProcessedDataBucketContext);
+      console.log(pdb);
+    })
     .on("paused", function (info) { })
     .on("active", function (info) { })
     .on("error", function (err) {
