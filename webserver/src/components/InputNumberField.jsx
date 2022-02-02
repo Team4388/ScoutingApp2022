@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Field, Form, useFormikContext } from "formik";
+import { Formik, FastField, Form, useFormikContext } from "formik";
 import {
   TextField,
   Button,
@@ -19,7 +19,7 @@ import { AddCircleOutline, RemoveCircleOutline } from "@material-ui/icons";
 const InputNumberField = (props) => {
   const { values, setFieldValue } = useFormikContext();
   return (
-    <Field
+    <FastField
       type="number"
       as={TextField}
       name={props.name}

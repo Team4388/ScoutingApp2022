@@ -6,7 +6,7 @@ import FormRenderer from "@data-driven-forms/react-form-renderer/form-renderer";
 import componentTypes from "@data-driven-forms/react-form-renderer/component-types";
 import componentMapper from "@data-driven-forms/blueprint-component-mapper/component-mapper";
 import FormTemplate from "@data-driven-forms/blueprint-component-mapper/form-template";
-import { Formik, Field, Form } from "formik";
+import { Formik, FastField, Form } from "formik";
 import InputNumberField from "../components/InputNumberField.jsx";
 import {
   TextField,
@@ -53,6 +53,7 @@ const InputPage = () => {
           defence: "0",
           disabled: false
         }}
+        validateOnChange="false"
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setTimeout(() => {
             localdb
@@ -87,10 +88,10 @@ const InputPage = () => {
           <Form >
             <Grid container direction="row" justifyContent="center" alignItems="flex-end" spacing={3}>
               <Grid item>
-                <Field type="input" as={TextField} name="team_number" label="Team #" />
+                <FastField type="input" as={TextField} name="team_number" label="Team #" />
               </Grid>
               <Grid item>
-                <Field type="input" as={TextField} name="match_number" label="Match Number" />
+                <FastField type="input" as={TextField} name="match_number" label="Match Number" />
               </Grid>
               <Grid item>
                 <FormControl component="fieldset">
@@ -98,13 +99,13 @@ const InputPage = () => {
                   <RadioGroup aria-label="Alliance" name="alliance" row>
                     <FormControlLabel
                       control={
-                        <Field as={Radio} type="radio" name="alliance" value="red" style={{ fontSize: 50 }} />
+                        <FastField as={Radio} type="radio" name="alliance" value="red" style={{ fontSize: 50 }} />
                       }
                       label="Red"
                     />
                     <FormControlLabel
                       control={
-                        <Field as={Radio} type="radio" name="alliance" value="blue" />
+                        <FastField as={Radio} type="radio" name="alliance" value="blue" />
                       }
                       label="Blue"
                     />
@@ -143,31 +144,31 @@ const InputPage = () => {
                   <RadioGroup aria-label="Climbing" name="climb_level" row>
                     <FormControlLabel
                       control={
-                        <Field as={Radio} type="radio" name="climb_level" value="0" />
+                        <FastField as={Radio} type="radio" name="climb_level" value="0" />
                       }
                       label="None"
                     />
                     <FormControlLabel
                       control={
-                        <Field as={Radio} type="radio" name="climb_level" value="1" />
+                        <FastField as={Radio} type="radio" name="climb_level" value="1" />
                       }
                       label="Low"
                     />
                     <FormControlLabel
                       control={
-                        <Field as={Radio} type="radio" name="climb_level" value="2" />
+                        <FastField as={Radio} type="radio" name="climb_level" value="2" />
                       }
                       label="Mid"
                     />
                     <FormControlLabel
                       control={
-                        <Field as={Radio} type="radio" name="climb_level" value="3" />
+                        <FastField as={Radio} type="radio" name="climb_level" value="3" />
                       }
                       label="High"
                     />
                     <FormControlLabel
                       control={
-                        <Field as={Radio} type="radio" name="climb_level" value="4" />
+                        <FastField as={Radio} type="radio" name="climb_level" value="4" />
                       }
                       label="Traversal"
                     />
@@ -205,19 +206,19 @@ const InputPage = () => {
                   <FormLabel component="legend">Defense</FormLabel>
                   <RadioGroup aria-label="Defense" name="defence" row>
                     <FormControlLabel
-                      control={<Field as={Radio} type="radio" name="defence" value="0" />}
+                      control={<FastField as={Radio} type="radio" name="defence" value="0" />}
                       label="None"
                     />
                     {/* <Divider orientation="vertical" flexItem middle /> */}
                     <FormControlLabel
-                      control={<Field as={Radio} type="radio" name="defence" value="1" />}
+                      control={<FastField as={Radio} type="radio" name="defence" value="1" />}
                       label="Poor"
                     />
                     <FormControlLabel
-                      control={<Field as={Radio} type="radio" name="defence" value="2" />}
+                      control={<FastField as={Radio} type="radio" name="defence" value="2" />}
                       label="Good"
                     /> <FormControlLabel
-                      control={<Field as={Radio} type="radio" name="defence" value="3" />}
+                      control={<FastField as={Radio} type="radio" name="defence" value="3" />}
                       label="Exceptional"
                     />
                   </RadioGroup>
@@ -225,7 +226,7 @@ const InputPage = () => {
               </Grid>
               <Grid item>
                 <FormControlLabel
-                  control={<Field as={Checkbox} type="checkbox" name="disabled" />}
+                  control={<FastField as={Checkbox} type="checkbox" name="disabled" />}
                   label="Disabled"
                 />
               </Grid>
@@ -233,13 +234,13 @@ const InputPage = () => {
             <div />
             <Grid container direction="row" justifyContent="center" alignItems="flex-end" spacing={3}>
               <Grid item>
-                <Field type="input" as={TextField} multiline rows={3} name="team_abilities_well" label="What they did Well" />
+                <FastField type="input" as={TextField} multiline rows={3} name="team_abilities_well" label="What they did Well" />
               </Grid>
               <Grid item>
-                <Field type="input" as={TextField} multiline rows={3} name="team_abilities_struggle" label="What they struggled with" />
+                <FastField type="input" as={TextField} multiline rows={3} name="team_abilities_struggle" label="What they struggled with" />
               </Grid>
               <Grid item>
-                <Field type="input" as={TextField} multiline rows={3} name="team_abilities_cant" label="What they can't do" />
+                <FastField type="input" as={TextField} multiline rows={3} name="team_abilities_cant" label="What they can't do" />
               </Grid>
             </Grid>
             <div />
