@@ -16,7 +16,7 @@ import NotFoundPage from "./Pages/NotFoundPage";
 import DashboardPage from "./Pages/DashboardPage/DashboardPage";
 import WelcomePage from "./Pages/WelcomePage";
 import InputPage from "./Pages/InputPage";
-import { createMuiTheme, ThemeProvider } from '@material-ui/core'
+import { createTheme, ThemeProvider } from '@material-ui/core/styles'
 import { Formik, Field, Form } from 'formik';
 import { TextField, Button, Grid, FormRow, Checkbox, Radio, FormControlLabel, FormControl, FormLabel, RadioGroup, IconButton, InputAdornment } from "@material-ui/core";
 import { AddCircleOutline, RemoveCircleOutline } from "@material-ui/icons";
@@ -25,8 +25,7 @@ import { ProcessedDataBucketProvider } from "./ProcessedDataBucketContext";
 
 
 function App() {
-  const darkTheme = createMuiTheme({
-
+  const darkTheme = createTheme({
     // Theme settings
     palette: {
       type: "dark",
@@ -35,18 +34,13 @@ function App() {
       fontSize: 18
     }
   });
-  const styles = {
-    bigbution: {
-
-    }
-  }
   return (
-    <div className="App">
-      <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={darkTheme}>
+      <ProcessedDataBucketProvider>
         <DbProvider>
-          <ProcessedDataBucketProvider>
-            <Router>
-              <Navigation />
+          <Router>
+            <Navigation />
+            <div className="App">
               <Routes>
                 <Route path="/" element={<WelcomePage />} />
                 <Route path="/Dashboard" element={<DashboardPage />} />
@@ -54,11 +48,11 @@ function App() {
                 <Route path="/404" element={<NotFoundPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
-            </Router>
-          </ProcessedDataBucketProvider>
+            </div>
+          </Router>
         </DbProvider>
-      </ThemeProvider>
-    </div>
+      </ProcessedDataBucketProvider>
+    </ThemeProvider>
   );
 }
 

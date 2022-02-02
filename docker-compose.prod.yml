@@ -1,18 +1,32 @@
 version: "3"
- 
+
 services:
   scouting-webserver-prod:
-    container_name: "scouting-webserver-production"
+    container_name: "production"
     restart: unless-stopped
     env_file:
       - .env
-    build: 
+    build:
       context: ./webserver
       dockerfile: ./Dockerfile.prod
     expose:
-      - 80
+      - 8080
     ports:
-      - "80:80/tcp"
+      - "8080:8080/tcp"
+      # - "80:80/tcp"
+      # - "443:443/tcp"
+    volumes:
+      - ./webserver/nginx:/etc/nginx/:ro
+  ssl-proxy:
+    image: fsouza/docker-ssl-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=10.43.88.1
+      - TARGET_PORT=8080
+      - TARGET_HOST=scouting-webserver-prod
+      - SSL_PORT:443
   couchdb:
     container_name: "scouting-couchdb"
     restart: unless-stopped
@@ -33,4 +47,12 @@ services:
     volumes:
       - ./couchdb/db.local.ini:/opt/couchdb/etc/local.ini
       - ./couchdb/data:/opt/couchdb/data
-
+  couch-ssl-proxy:
+    image: fsouza/docker-ssl-proxy
+    ports:
+      - "5985:5985"
+    environment:
+      - DOMAIN=10.43.88.1
+      - TARGET_PORT=5984
+      - TARGET_HOST=scouting-couchdb
+      - SSL_PORT:5985

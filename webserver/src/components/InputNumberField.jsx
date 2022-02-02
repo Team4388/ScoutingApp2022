@@ -25,16 +25,15 @@ const InputNumberField = (props) => {
       name={props.name}
       label={props.label}
       InputProps={{
-        style: { fontSize: 40, "max-width": 300 },
+        style: { fontSize: 40, "maxWidth": 300 },
         startAdornment: (
           <InputAdornment position="start">
             <IconButton
               onClick={() => {
                 setFieldValue(props.name, Math.max(parseInt(values[props.name]) - 1, 0));
               }}
-              iconStyle={{ width: '48px', height: '48px' }}
               style={{ width: '96px', height: '96px', padding: '24px' }}
-              touch={true}
+              touch="true"
             >
               <RemoveCircleOutline style={{ fontSize: 50 }} />
             </IconButton>
@@ -46,11 +45,8 @@ const InputNumberField = (props) => {
               onClick={() => {
                 setFieldValue(props.name, Math.max(parseInt(values[props.name]) + 1, 0));
               }}
-              iconStyle={{ width: '100px', height: '100px' }}
               style={{ width: '96px', height: '96px', padding: '0' }}
-              touch={true}
-              size="large"
-
+              touch="true"
             >
               <AddCircleOutline style={{ fontSize: 50 }} />
             </IconButton>

@@ -1,3 +1,3 @@
 {
-    "prettier.configPath": "${workspaceFolder}/.prettierrc.json"
+    "prettier.printWidth": 800
 }

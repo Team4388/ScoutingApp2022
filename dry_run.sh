@@ -1,0 +1,1 @@
+docker-compose run certonly --webroot --webroot-path /var/www/certbot/ --dry-run -d scouting.local

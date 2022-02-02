@@ -14,6 +14,7 @@ export function useRemoteDb() {
 }
 
 export function DbProvider({ children }) {
+  const pdb = React.useContext(ProcessedDataBucketContext);
   const [localdb, setLocaldb] = useState(new PouchDB("testdata"));
   //used in development server
   const [remotedb, setRemotedb] = useState(
@@ -25,25 +26,16 @@ export function DbProvider({ children }) {
       },
     })
   );
-  console.log(remotedb);
-  // const [remotedb, setRemotedb] = useState(new PouchDB(window.location.protocol + "//" + window.location.hostname + ":5984/kcmt2021", {skip_setup: true}))
 
-  //Login to the Remote Database
-  // remotedb.logIn('2021', 'Ridgebotics').then(function () {
-  //     console.log("CouchDb Login Successful!");
-  // }).catch(function (err) {
-  //     console.log("Unable to login to CouchDb!");
-  //     console.log(err);
-  // });
-
+  pdb.updateData(localdb);
   localdb
     .sync(remotedb, {
       live: true,
       retry: true,
     })
     .on("change", function (change) {
-      const pdb = React.useContext(ProcessedDataBucketContext);
-      console.log(pdb);
+      console.log('DB CHANGED');
+      pdb.updateData(localdb);
     })
     .on("paused", function (info) { })
     .on("active", function (info) { })
