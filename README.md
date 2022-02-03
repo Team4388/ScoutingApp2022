@@ -13,7 +13,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 
 This will also run the couchdb server.
-Open [http://localhost:5984](http://localhost:5984) to open the couchdb web interface
+Open [http://localhost:5984](http://localhost:5984/_utils) to open the couchdb web interface
 
 ### `start_prod.sh`
 
@@ -24,7 +24,7 @@ This runs and nginx server that serves the app over http
 Open [http://localhost](http://localhost) to view it in your browser.
 
 This will also run the couchdb server.
-Open [http://localhost:5984](http://localhost:5984) to open the couchdb web interface
+Open [http://localhost:5984](http://localhost:5984/_utils) to open the couchdb web interface
 
 ### `stop.sh`
 
