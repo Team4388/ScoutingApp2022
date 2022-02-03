@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import Navigation from "./components/Navigation/Navigation";
+import { DbProvider } from "./DbContext";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+} from "react-router-dom";
+import "./App.css";
+// const Cushion = require('cushiondb-client');
+
+//Pages
+import NotFoundPage from "./Pages/NotFoundPage";
+import DashboardPage from "./Pages/DashboardPage/DashboardPage";
+import InputPage from "./Pages/InputPage";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <DbProvider>
+        <Router>
+          <Navigation />
+          <Routes>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/Dashboard" element={<DashboardPage />} />
+            <Route path="/Input" element={<InputPage />} />
+            <Route path="/404" element={<NotFoundPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Router>
+      </DbProvider>
     </div>
   );
 }
