@@ -9,10 +9,10 @@ In the project directory, you can run:
 ### `start_dev.sh`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-The page will reload when you make changes.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.\
+The page will reload when you make changes.
 
-This will also run the couchdb server.
+This will also run the couchdb server.\
 Open [http://localhost:5984/_utils](http://localhost:5984/_utils) to open the couchdb web interface
 
 ### `start_prod.sh`
@@ -20,10 +20,10 @@ Open [http://localhost:5984/_utils](http://localhost:5984/_utils) to open the co
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-This runs and nginx server that serves the app over http
+This runs and nginx server that serves the app over http\
 Open [http://localhost](http://localhost) to view it in your browser.
 
-This will also run the couchdb server.
+This will also run the couchdb server.\
 Open [http://localhost:5984/_utils](http://localhost:5984/_utils) to open the couchdb web interface
 
 ### `stop.sh`
