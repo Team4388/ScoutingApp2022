@@ -14,6 +14,7 @@ import "./App.css";
 //Pages
 import NotFoundPage from "./Pages/NotFoundPage";
 import DashboardPage from "./Pages/DashboardPage/DashboardPage";
+import WelcomePage from "./Pages/WelcomePage";
 import InputPage from "./Pages/InputPage";
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
         <Router>
           <Navigation />
           <Routes>
-            <Route path="/" element={<DashboardPage />} />
+            <Route path="/" element={<WelcomePage />} />
             <Route path="/Dashboard" element={<DashboardPage />} />
             <Route path="/Input" element={<InputPage />} />
             <Route path="/404" element={<NotFoundPage />} />
