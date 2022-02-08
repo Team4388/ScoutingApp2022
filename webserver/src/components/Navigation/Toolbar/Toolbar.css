@@ -21,7 +21,8 @@
 .toolbar_logo a {
     color: white;
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 2.0rem;
+    height: 100%;
 }
 
 .toolbar_spacer {
@@ -42,6 +43,8 @@
 .toolbar_items a {
     color: white;
     text-decoration: none;
+    font-size: 1.5rem;
+    height: 200%;
 }
 
 .toolbar_items a:hover,
