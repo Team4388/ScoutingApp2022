@@ -28,11 +28,12 @@ export class ProcessedDataBucket {
                   lower_hub_teleop: [],
                   match_points: [],
                 },
-                climbs_none: 0,
-                climbs_low: 0,
-                climbs_mid: 0,
-                climbs_high: 0,
-                climbs_transverse: 0,
+                climb_counts: [0, 0, 0, 0, 0],
+                // climbs_none: 0,
+                // climbs_low: 0,
+                // climbs_mid: 0,
+                // climbs_high: 0,
+                // climbs_transverse: 0,
                 points_average: 0,
                 num_disables: 0,
                 num_flips: 0,
@@ -65,26 +66,27 @@ export class ProcessedDataBucket {
             thisTeamData.data_sets.match_points.push(match_points);
 
             //climb data
-            switch (parseInt(doc.climb_level)) {
-              case 0:
-                thisTeamData.climbs_none++;
-                break;
-              case 1:
-                thisTeamData.climbs_low++;
-                break;
-              case 2:
-                thisTeamData.climbs_mid++;
-                break;
-              case 3:
-                thisTeamData.climbs_high++;
-                break;
-              case 4:
-                thisTeamData.climbs_transverse++;
-                break;
-              default:
-                console.error("Invalid Climb Level (how did this even happen lol?): " + doc.climb_level);
-                break;
-            }
+            thisTeamData.climb_counts[parseInt(doc.climb_level)]++;
+            // switch (parseInt(doc.climb_level)) {
+            //   case 0:
+            //     thisTeamData.climbs_none++;
+            //     break;
+            //   case 1:
+            //     thisTeamData.climbs_low++;
+            //     break;
+            //   case 2:
+            //     thisTeamData.climbs_mid++;
+            //     break;
+            //   case 3:
+            //     thisTeamData.climbs_high++;
+            //     break;
+            //   case 4:
+            //     thisTeamData.climbs_transverse++;
+            //     break;
+            //   default:
+            //     console.error("Invalid Climb Level (how did this even happen lol?): " + doc.climb_level);
+            //     break;
+            // }
 
             //misc data
             thisTeamData.num_disables += doc.disabled ? 1 : 0;
