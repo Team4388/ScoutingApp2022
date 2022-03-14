@@ -1,18 +1,25 @@
 import React from "react";
 import { useLocalDb } from "../DbContext";
 import "./InputPage.css";
-// import { Button, Intent, Spinner } from "@blueprintjs/core";
-import FormRenderer from "@data-driven-forms/react-form-renderer/form-renderer";
-import componentTypes from "@data-driven-forms/react-form-renderer/component-types";
-import componentMapper from "@data-driven-forms/blueprint-component-mapper/component-mapper";
-import FormTemplate from "@data-driven-forms/blueprint-component-mapper/form-template";
 import { Formik, FastField, Form } from "formik";
 import InputNumberField from "../components/InputNumberField.jsx";
-import { TextField, Button, Grid, FormRow, Divider, Checkbox, Radio, FormControlLabel, FormControl, FormLabel, RadioGroup, IconButton, InputAdornment } from "@material-ui/core";
-import { AddCircleOutline, RemoveCircleOutline } from "@material-ui/icons";
+import { TextField, Button, Grid, FormRow, Divider, Checkbox, Radio, FormControlLabel, FormControl, FormLabel, RadioGroup, IconButton, InputAdornment, Box } from "@mui/material";
 
 const InputPage = () => {
   const localdb = useLocalDb();
+  let panel_sx = {
+    display: "flex",
+    flexDirection: { xs: "column", sm: "row" },
+    alignItems: { xs: "center", sm: "center" },
+    justifyContent: { xs: "flex-start", sm: "center" },
+    bgcolor: "background.paper",
+    p: 2,
+    m: 1,
+    gap: 2,
+    maxWidth: "fit-content",
+    borderRadius: "10px",
+    boxShadow: 7,
+  };
   return (
     <div>
       <br />
@@ -64,49 +71,31 @@ const InputPage = () => {
       >
         {({ values, setValues, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
           <Form>
-            <Grid container direction="row" justifyContent="center" alignItems="flex-end" spacing={3}>
-              <Grid item>
+            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <Box sx={panel_sx}>
                 <FastField type="input" as={TextField} name="team_number" label="Team #" />
-              </Grid>
-              <Grid item>
                 <FastField type="input" as={TextField} name="match_number" label="Match Number" />
-              </Grid>
-              <Grid item>
                 <FormControl component="fieldset">
                   <FormLabel component="legend">Alliance</FormLabel>
                   <RadioGroup aria-label="Alliance" name="alliance" row>
-                    <FormControlLabel control={<FastField as={Radio} type="radio" name="alliance" value="red" style={{ fontSize: 50 }} />} label="Red" />
-                    <FormControlLabel control={<FastField as={Radio} type="radio" name="alliance" value="blue" />} label="Blue" />
+                    <FormControlLabel control={<FastField as={Radio} type="radio" name="alliance" value="red" sx={{ "&, &.Mui-checked": { color: "red_alliance" } }} />} sx={{ color: "red_alliance" }} label="Red" />
+                    <FormControlLabel control={<FastField as={Radio} type="radio" name="alliance" value="blue" sx={{ "&, &.Mui-checked": { color: "blue_alliance" } }} />} sx={{ color: "blue_alliance" }} label="Blue" />
                   </RadioGroup>
                 </FormControl>
-              </Grid>
-            </Grid>
-            <div />
-            <Grid container direction="row" justifyContent="center" alignItems="flex-end" spacing={3}>
-              <Grid item>
-                <Grid container direction="column" justifyContent="flex-end" alignItems="center" spacing={3}>
-                  <Grid item>
-                    <InputNumberField name="upper_hub_auto" label="Upper Hub Auto" />
-                  </Grid>
-                  <Grid item>
-                    <InputNumberField name="lower_hub_auto" label="Lower Hub Auto" />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item>
-                <Grid container direction="column" justifyContent="flex-end" alignItems="center" spacing={3}>
-                  <Grid item>
-                    <InputNumberField name="upper_hub_teleop" label="Upper Hub Teleop" />
-                  </Grid>
-                  <Grid item>
-                    <InputNumberField name="lower_hub_teleop" label="Lower Hub Teleop" />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-            <div />
-            <Grid container direction="row" justifyContent="center" alignItems="flex-end" spacing={3}>
-              <Grid item>
+              </Box>
+
+              <Box sx={panel_sx}>
+                <InputNumberField name="upper_hub_auto" label="Upper Hub Auto" />
+                <InputNumberField name="lower_hub_auto" label="Lower Hub Auto" />
+                <FormControlLabel control={<FastField as={Checkbox} type="checkbox" name="taxi_auto" />} label="Auto Taxi" />
+              </Box>
+
+              <Box sx={panel_sx}>
+                <InputNumberField name="upper_hub_teleop" label="Upper Hub Teleop" />
+                <InputNumberField name="lower_hub_teleop" label="Lower Hub Teleop" />
+              </Box>
+
+              <Box sx={panel_sx}>
                 <FormControl component="fieldset">
                   <FormLabel component="legend">Climbing</FormLabel>
                   <RadioGroup aria-label="Climbing" name="climb_level" row>
@@ -117,66 +106,45 @@ const InputPage = () => {
                     <FormControlLabel control={<FastField as={Radio} type="radio" name="climb_level" value="4" />} label="Traversal" />
                   </RadioGroup>
                 </FormControl>
-              </Grid>
-            </Grid>
-            <div />
-            <Grid container direction="row" justifyContent="center" alignItems="flex-end" spacing={3}>
-              <Grid item>
-                <Grid container direction="column" justifyContent="flex-end" alignItems="center" spacing={3}>
-                  <Grid item>
-                    <InputNumberField name="fouls" label="Fouls" />
-                  </Grid>
-                  <Grid item>
-                    <InputNumberField name="fouls_tech" label="Tech Fouls" />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item>
-                <Grid container direction="column" justifyContent="flex-end" alignItems="center" spacing={3}>
-                  <Grid item>
-                    <InputNumberField name="red_cards" label="Red Cards" />
-                  </Grid>
-                  <Grid item>
-                    <InputNumberField name="yellow_cards" label="Yellow Cards" />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-            <div />
-            <Grid container direction="row" justifyContent="center" alignItems="flex-end" spacing={3}>
-              <Grid item>
+              </Box>
+
+              <Box sx={panel_sx}>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <InputNumberField name="fouls" label="Fouls" />
+                  <InputNumberField name="fouls_tech" label="Tech Fouls" />
+                </Box>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <InputNumberField name="red_cards" label="Red Cards" />
+                  <InputNumberField name="yellow_cards" label="Yellow Cards" />
+                </Box>
+              </Box>
+
+              <Box sx={panel_sx}>
                 <FormControl component="fieldset">
                   <FormLabel component="legend">Defense</FormLabel>
                   <RadioGroup aria-label="Defense" name="defence" row>
                     <FormControlLabel control={<FastField as={Radio} type="radio" name="defence" value="0" />} label="None" />
-                    {/* <Divider orientation="vertical" flexItem middle /> */}
                     <FormControlLabel control={<FastField as={Radio} type="radio" name="defence" value="1" />} label="Poor" />
-                    <FormControlLabel control={<FastField as={Radio} type="radio" name="defence" value="2" />} label="Good" /> <FormControlLabel control={<FastField as={Radio} type="radio" name="defence" value="3" />} label="Exceptional" />
+                    <FormControlLabel control={<FastField as={Radio} type="radio" name="defence" value="2" />} label="Good" />
+                    <FormControlLabel control={<FastField as={Radio} type="radio" name="defence" value="3" />} label="Exceptional" />
                   </RadioGroup>
                 </FormControl>
-              </Grid>
-              <Grid item>
                 <FormControlLabel control={<FastField as={Checkbox} type="checkbox" name="disabled" />} label="Disabled" />
-              </Grid>
-            </Grid>
+              </Box>
+
+              <Box sx={{ ...panel_sx, display: "flex", flexDirection: "column" }}>
+                <h2>What they _______</h2>
+                <Box sx={{ display: "flex", flexDirection: "row", gap: 2, p: 0, m: 0 }}>
+                  <FastField type="input" as={TextField} multiline rows={3} name="team_abilities_well" label="did well" />
+                  <FastField type="input" as={TextField} multiline rows={3} name="team_abilities_struggle" label="struggled with" />
+                  <FastField type="input" as={TextField} multiline rows={3} name="team_abilities_cant" label="can't do" />
+                </Box>
+                <Button type="submit" disabled={isSubmitting}>
+                  Submit
+                </Button>
+              </Box>
+            </Box>
             <div />
-            <Grid container direction="row" justifyContent="center" alignItems="flex-end" spacing={3}>
-              <Grid item>
-                <FastField type="input" as={TextField} multiline rows={3} name="team_abilities_well" label="What they did Well" />
-              </Grid>
-              <Grid item>
-                <FastField type="input" as={TextField} multiline rows={3} name="team_abilities_struggle" label="What they struggled with" />
-              </Grid>
-              <Grid item>
-                <FastField type="input" as={TextField} multiline rows={3} name="team_abilities_cant" label="What they can't do" />
-              </Grid>
-            </Grid>
-            <div />
-            <Grid container direction="row" justifyContent="center" alignItems="flex-end" spacing={3}>
-              <Button type="submit" disabled={isSubmitting}>
-                Submit
-              </Button>
-            </Grid>
           </Form>
         )}
       </Formik>

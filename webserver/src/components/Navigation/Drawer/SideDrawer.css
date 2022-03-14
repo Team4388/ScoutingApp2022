@@ -1,5 +1,6 @@
 .side_drawer {
     position: fixed;
+    top: 56px;
     height: 100%;
     width: 100%;
     background: #009954;
@@ -18,6 +19,7 @@
 
 .side_drawer ul {
     /* height: 100%; */
+    width: 100%;
     list-style: none;
     display: flex;
     flex-direction: column;
@@ -26,6 +28,11 @@
 
 .side_drawer li {
     margin: 0.5rem 0;
+    /* border-top: 1px solid #ddd; */
+}
+
+.side_drawer li:first-child {
+    /* border-top: 0; */
 }
 
 .side_drawer a {
@@ -36,6 +43,7 @@
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     padding-right: 1000%;
+    max-width: 100%;
 }
 
 .side_drawer a:hover,

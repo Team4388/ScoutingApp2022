@@ -20,21 +20,22 @@ export class ProcessedDataBucket {
             if (typeof this.teamData[doc.team_number] === "undefined") {
               this.teamData[doc.team_number] = {
                 team_number: doc.team_number,
-                games_played: 0,
+                matched_played: 0,
                 data_sets: {
                   upper_hub_auto: [],
                   lower_hub_auto: [],
                   upper_hub_teleop: [],
                   lower_hub_teleop: [],
-                  match_points: [],
+                  auto_points: [],
+                  teleop_hub_points: [],
+                  climb_points: [],
+                  total_match_points: [],
                 },
                 climb_counts: [0, 0, 0, 0, 0],
-                // climbs_none: 0,
-                // climbs_low: 0,
-                // climbs_mid: 0,
-                // climbs_high: 0,
-                // climbs_transverse: 0,
-                points_average: 0,
+                average_auto_points: 0,
+                average_teleop_hub_points: 0,
+                average_climb_points: 0,
+                average_total_match_points: 0,
                 num_disables: 0,
                 num_flips: 0,
                 fouls: 0,
@@ -46,47 +47,24 @@ export class ProcessedDataBucket {
 
             //add this game's data to the respective team data:
             let thisTeamData = this.teamData[doc.team_number];
-            thisTeamData.games_played++;
+            thisTeamData.matched_played++;
 
-            let match_points =
-              (parseInt(doc.taxi_auto) ? 2 : 0) +
-              parseInt(doc.upper_hub_auto) * 4 +
-              parseInt(doc.lower_hub_auto) * 2 +
-              parseInt(doc.upper_hub_teleop) * 2 +
-              parseInt(doc.lower_hub_teleop) * 1 +
-              (parseInt(doc.climb_level) == 0 ? 4 : 0) +
-              (parseInt(doc.climb_level) == 1 ? 6 : 0) +
-              (parseInt(doc.climb_level) == 2 ? 10 : 0) +
-              (parseInt(doc.climb_level) == 3 ? 15 : 0);
+            let auto_points = (parseInt(doc.taxi_auto) ? 2 : 0) + parseInt(doc.upper_hub_auto) * 4 + parseInt(doc.lower_hub_auto) * 2;
+            let teleop_hub_points = parseInt(doc.upper_hub_teleop) * 2 + parseInt(doc.lower_hub_teleop) * 1;
+            let climb_points = (parseInt(doc.climb_level) == 0 ? 4 : 0) + (parseInt(doc.climb_level) == 1 ? 6 : 0) + (parseInt(doc.climb_level) == 2 ? 10 : 0) + (parseInt(doc.climb_level) == 3 ? 15 : 0);
+            let total_match_points = auto_points + teleop_hub_points + climb_points;
             //data sets
             thisTeamData.data_sets.upper_hub_auto.push(parseInt(doc.upper_hub_auto));
             thisTeamData.data_sets.lower_hub_auto.push(parseInt(doc.lower_hub_auto));
             thisTeamData.data_sets.upper_hub_teleop.push(parseInt(doc.upper_hub_teleop));
             thisTeamData.data_sets.lower_hub_teleop.push(parseInt(doc.lower_hub_teleop));
-            thisTeamData.data_sets.match_points.push(match_points);
+            thisTeamData.data_sets.auto_points.push(auto_points);
+            thisTeamData.data_sets.teleop_hub_points.push(teleop_hub_points);
+            thisTeamData.data_sets.climb_points.push(climb_points);
+            thisTeamData.data_sets.total_match_points.push(total_match_points);
 
             //climb data
             thisTeamData.climb_counts[parseInt(doc.climb_level)]++;
-            // switch (parseInt(doc.climb_level)) {
-            //   case 0:
-            //     thisTeamData.climbs_none++;
-            //     break;
-            //   case 1:
-            //     thisTeamData.climbs_low++;
-            //     break;
-            //   case 2:
-            //     thisTeamData.climbs_mid++;
-            //     break;
-            //   case 3:
-            //     thisTeamData.climbs_high++;
-            //     break;
-            //   case 4:
-            //     thisTeamData.climbs_transverse++;
-            //     break;
-            //   default:
-            //     console.error("Invalid Climb Level (how did this even happen lol?): " + doc.climb_level);
-            //     break;
-            // }
 
             //misc data
             thisTeamData.num_disables += doc.disabled ? 1 : 0;
@@ -95,13 +73,15 @@ export class ProcessedDataBucket {
             thisTeamData.fouls_tech += parseInt(doc.fouls_tech);
             thisTeamData.red_cards += parseInt(doc.red_cards);
             thisTeamData.yellow_cards += parseInt(doc.yellow_cards);
+
             //sum of all points in the match points data set for this team
-            let total_points = thisTeamData.data_sets.match_points.reduce(function (accum, current) {
-              return accum + current;
-            }, 0);
-            thisTeamData.points_average = total_points / thisTeamData.games_played;
+            //function for getting the sum of an array, use in reduce function of array
+            const sum = (accum, current) => accum + current;
+            thisTeamData.average_auto_points = thisTeamData.data_sets.auto_points.reduce(sum, 0) / thisTeamData.matched_played;
+            thisTeamData.average_teleop_hub_points = thisTeamData.data_sets.teleop_hub_points.reduce(sum, 0) / thisTeamData.matched_played;
+            thisTeamData.average_climb_points = thisTeamData.data_sets.climb_points.reduce(sum, 0) / thisTeamData.matched_played;
+            thisTeamData.average_total_match_points = thisTeamData.data_sets.total_match_points.reduce(sum, 0) / thisTeamData.matched_played;
           });
-          console.log(this.teamData);
         })
         .catch((err) => {
           console.log("Error while processing data!");
