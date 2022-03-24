@@ -8,16 +8,14 @@ export function updateProcessedDataBucket(db, setProcessedDataBucket) {
       let teamData = {};
       let matchData = {};
 
-      //   console.log(result);
       result.rows.forEach((dbentry) => {
         let doc = dbentry.doc;
-        // console.log(doc);
 
         //if there's no processed data on a team yet, create a default data entry
         if (typeof teamData[doc.team_number] === "undefined") {
           teamData[doc.team_number] = {
             team_number: doc.team_number,
-            matched_played: 0,
+            matches_played: 0,
             data_sets: {
               upper_hub_auto: [],
               lower_hub_auto: [],
@@ -44,7 +42,7 @@ export function updateProcessedDataBucket(db, setProcessedDataBucket) {
 
         //add this game's data to the respective team data:
         let thisTeamData = teamData[doc.team_number];
-        thisTeamData.matched_played++;
+        thisTeamData.matches_played++;
 
         let auto_points = (parseInt(doc.taxi_auto) ? 2 : 0) + parseInt(doc.upper_hub_auto) * 4 + parseInt(doc.lower_hub_auto) * 2;
         let teleop_hub_points = parseInt(doc.upper_hub_teleop) * 2 + parseInt(doc.lower_hub_teleop) * 1;
@@ -74,10 +72,10 @@ export function updateProcessedDataBucket(db, setProcessedDataBucket) {
         //sum of all points in the match points data set for this team
         //function for getting the sum of an array, use in reduce function of array
         const sum = (accum, current) => accum + current;
-        thisTeamData.average_auto_points = thisTeamData.data_sets.auto_points.reduce(sum, 0) / thisTeamData.matched_played;
-        thisTeamData.average_teleop_hub_points = thisTeamData.data_sets.teleop_hub_points.reduce(sum, 0) / thisTeamData.matched_played;
-        thisTeamData.average_climb_points = thisTeamData.data_sets.climb_points.reduce(sum, 0) / thisTeamData.matched_played;
-        thisTeamData.average_total_match_points = thisTeamData.data_sets.total_match_points.reduce(sum, 0) / thisTeamData.matched_played;
+        thisTeamData.average_auto_points = thisTeamData.data_sets.auto_points.reduce(sum, 0) / thisTeamData.matches_played;
+        thisTeamData.average_teleop_hub_points = thisTeamData.data_sets.teleop_hub_points.reduce(sum, 0) / thisTeamData.matches_played;
+        thisTeamData.average_climb_points = thisTeamData.data_sets.climb_points.reduce(sum, 0) / thisTeamData.matches_played;
+        thisTeamData.average_total_match_points = thisTeamData.data_sets.total_match_points.reduce(sum, 0) / thisTeamData.matches_played;
       });
       setProcessedDataBucket({ teamData: teamData, matchData: matchData });
     })

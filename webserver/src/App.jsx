@@ -19,11 +19,11 @@ function App() {
     palette: {
       mode: "dark",
       background: {
-        paper: "#101515",
+        paper: "#203030",
       },
       text: {
-        // primary: "#edf8f3",
-        // secondary: "#acd3bf",
+        primary: "#edf8f3",
+        secondary: "#acd3bf",
       },
       red_alliance: "#ec2e63",
       blue_alliance: "#2d74eb",

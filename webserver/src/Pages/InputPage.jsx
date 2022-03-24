@@ -1,12 +1,17 @@
-import React from "react";
-import { useLocalDb } from "../DbContext";
+import React, { useCallback } from "react";
+import { useLocalDb, useRemoteDb } from "../DbContext";
 import "./InputPage.css";
 import { Formik, FastField, Form } from "formik";
 import InputNumberField from "../components/InputNumberField.jsx";
 import { TextField, Button, Grid, FormRow, Divider, Checkbox, Radio, FormControlLabel, FormControl, FormLabel, RadioGroup, IconButton, InputAdornment, Box } from "@mui/material";
+import { useProcessedDataBucket } from "../ProcessedDataBucketContext";
+import { getProcessedDataBucket, updateProcessedDataBucket } from "../ProcessedDataBucket";
 
 const InputPage = () => {
-  const localdb = useLocalDb();
+  let { localdb, setLocaldb } = useLocalDb();
+  let { remotedb, setRemotedb } = useRemoteDb();
+  const { processedDataBucket, setProcessedDataBucket } = useProcessedDataBucket();
+
   let panel_sx = {
     display: "flex",
     flexDirection: { xs: "column", sm: "row" },
@@ -20,6 +25,36 @@ const InputPage = () => {
     borderRadius: "10px",
     boxShadow: 7,
   };
+
+  const onSubmit = useCallback(
+    (values, { setSubmitting, resetForm }) => {
+      // setTimeout(() => {
+      localdb
+        .put({
+          // _id: new Date().toISOString(),
+          _id: "match_" + values.match_number + "_team_" + values.team_number,
+          ...values,
+        })
+        .then((result) => {
+          alert("Input Saved Successfully!");
+          console.log(result);
+          console.log(localdb);
+          localdb.replicate.to(remotedb, {
+            live: true,
+          });
+        })
+        .catch((err) => {
+          console.log("Failed To Save Input!");
+          alert(err);
+        });
+      // alert(JSON.stringify(values, null, 2));
+      // resetForm(); //Hah tobad
+      setSubmitting(false);
+      // }, 400);
+      updateProcessedDataBucket(localdb, setProcessedDataBucket);
+    },
+    [localdb, remotedb, setProcessedDataBucket, updateProcessedDataBucket]
+  );
   return (
     <div>
       <br />
@@ -47,27 +82,7 @@ const InputPage = () => {
           disabled: false,
         }}
         validateOnChange="false"
-        onSubmit={(values, { setSubmitting, resetForm }) => {
-          setTimeout(() => {
-            localdb
-              .put({
-                _id: new Date().toISOString(),
-                ...values,
-              })
-              .then((result) => {
-                alert("Input Saved Successfully!");
-                console.log(result);
-                console.log(localdb);
-              })
-              .catch((err) => {
-                console.log("Failed To Save Input!");
-                alert(err);
-              });
-            // alert(JSON.stringify(values, null, 2));
-            // resetForm(); //Hah tobad
-            setSubmitting(false);
-          }, 400);
-        }}
+        onSubmit={onSubmit}
       >
         {({ values, setValues, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
           <Form>
