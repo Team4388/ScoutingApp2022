@@ -1,5 +1,5 @@
 import PouchDB from "pouchdb";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useProcessedDataBucket } from "./ProcessedDataBucketContext";
 import { getProcessedDataBucket, updateProcessedDataBucket } from "./ProcessedDataBucket";
 
@@ -36,6 +36,33 @@ export function DbProvider({ children }) {
     .on("change", (change) => {
       updateProcessedDataBucket(localdb, setProcessedDataBucket);
     });
+  //   useEffect(()=>{
+  // updateProcessedDataBucket(localdb, setProcessedDataBucket);
+  // }, [setProcessedDataBucket]);
+  //         localdb.replicate.to(remotedb, {
+  //           retry: true,
+  //         });
+
+  // const [localNotesdb, setLocalNotesdb] = useState(new PouchDB("denver_notes"));
+  // const [remoteNotesdb, setRemoteNotesdb] = useState(
+  //   new PouchDB("http://" + window.location.hostname + ":5984/denver_notes", {
+  //     skip_setup: true,
+  //     auth: {
+  //       username: "scouting",
+  //       password: "Ridgebotics",
+  //     },
+  //   })
+  // );
+  // localNotesdb.replicate
+  //   .from(remoteNotesdb, {
+  //     live: true,
+  //     retry: true,
+  //   })
+  //   .on("change", (change) => {
+  //     // updateProcessedDataBucket(localdb, setProcessedDataBucket);
+  //   });
+
+
   // updateProcessedDataBucket(localdb, setProcessedDataBucket);
   // useEffect(() => {
   //   setDatabaseName("denver_fr", setLocaldb, setRemotedb, setProcessedDataBucket);
@@ -98,6 +125,10 @@ export function setDatabaseName(name, setLocaldb, setRemotedb, setProcessedDataB
       updateProcessedDataBucket(localdb, setProcessedDataBucket);
     });
   updateProcessedDataBucket(localdb, setProcessedDataBucket);
+          localdb.replicate.to(remotedb, {
+            live: true,
+            retry: true,
+          });
   setLocaldb(localdb);
   setRemotedb(remotedb);
 }

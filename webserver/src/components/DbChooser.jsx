@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Box, InputLabel, MenuItem, FormControl, Select } from "@mui/material";
+import { Box, InputLabel, MenuItem, FormControl, Select, Button } from "@mui/material";
 import { setDatabaseName, useLocalDb, useRemoteDb } from "../DbContext";
 import { useProcessedDataBucket } from "../ProcessedDataBucketContext";
 
@@ -9,6 +9,13 @@ const DbChooser = (props) => {
   const { processedDataBucket, setProcessedDataBucket } = useProcessedDataBucket();
 
   const [dbname, setDbName] = React.useState(localdb.name);
+  
+  const sync = useCallback(()=>{
+    localdb.sync(remotedb, {
+      // live:true,
+      retry:true
+    });
+  }, [localdb, remotedb]);
 
   const handleChange = useCallback((event) => {
     console.log(event.target.value);
@@ -29,6 +36,9 @@ const DbChooser = (props) => {
             <MenuItem value={"testdata"}>Test Data</MenuItem>
           </Select>
         </FormControl>
+                <Button onClick={sync}>
+                  Force Sync
+                </Button>
       </Box>
     </div>
   );

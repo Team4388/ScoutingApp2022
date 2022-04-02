@@ -16,6 +16,7 @@ export function updateProcessedDataBucket(db, setProcessedDataBucket) {
           teamData[doc.team_number] = {
             team_number: doc.team_number,
             matches_played: 0,
+            notes: [],
             data_sets: {
               upper_hub_auto: [],
               lower_hub_auto: [],
@@ -40,8 +41,11 @@ export function updateProcessedDataBucket(db, setProcessedDataBucket) {
           };
         }
 
-        //add this game's data to the respective team data:
         let thisTeamData = teamData[doc.team_number];
+        if (doc.type === "match")
+        {
+          console.log("MATCH: " + doc._id)
+        //add this game's data to the respective team data:
         thisTeamData.matches_played++;
 
         let auto_points = (parseInt(doc.taxi_auto) ? 2 : 0) + parseInt(doc.upper_hub_auto) * 4 + parseInt(doc.lower_hub_auto) * 2;
@@ -76,6 +80,10 @@ export function updateProcessedDataBucket(db, setProcessedDataBucket) {
         thisTeamData.average_teleop_hub_points = thisTeamData.data_sets.teleop_hub_points.reduce(sum, 0) / thisTeamData.matches_played;
         thisTeamData.average_climb_points = thisTeamData.data_sets.climb_points.reduce(sum, 0) / thisTeamData.matches_played;
         thisTeamData.average_total_match_points = thisTeamData.data_sets.total_match_points.reduce(sum, 0) / thisTeamData.matches_played;
+        } else if (doc.type === "notes") {
+          console.log("NOTES: " + doc._id)
+          thisTeamData.notes.push(doc.notes);
+        }
       });
       setProcessedDataBucket({ teamData: teamData, matchData: matchData });
     })

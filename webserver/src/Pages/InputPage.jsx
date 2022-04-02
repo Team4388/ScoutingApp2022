@@ -33,6 +33,7 @@ const InputPage = () => {
         .put({
           // _id: new Date().toISOString(),
           _id: "match_" + values.match_number + "_team_" + values.team_number,
+          type: "match",
           ...values,
         })
         .then((result) => {
@@ -40,7 +41,7 @@ const InputPage = () => {
           console.log(result);
           console.log(localdb);
           localdb.replicate.to(remotedb, {
-            live: true,
+            retry: true,
           });
         })
         .catch((err) => {
@@ -48,7 +49,7 @@ const InputPage = () => {
           alert(err);
         });
       // alert(JSON.stringify(values, null, 2));
-      // resetForm(); //Hah tobad
+      resetForm(); //Hah tobad
       setSubmitting(false);
       // }, 400);
       updateProcessedDataBucket(localdb, setProcessedDataBucket);
@@ -76,7 +77,7 @@ const InputPage = () => {
           lower_hub_auto: "0",
           upper_hub_teleop: "0",
           lower_hub_teleop: "0",
-          climb_level: "",
+          climb_level: "0",
           alliance: "",
           defence: "0",
           disabled: false,
@@ -148,12 +149,12 @@ const InputPage = () => {
               </Box>
 
               <Box sx={{ ...panel_sx, display: "flex", flexDirection: "column" }}>
-                <h2>What they _______</h2>
+                {/* <h2>What they _______</h2>
                 <Box sx={{ display: "flex", flexDirection: "row", gap: 2, p: 0, m: 0 }}>
                   <FastField type="input" as={TextField} multiline rows={3} name="team_abilities_well" label="did well" />
                   <FastField type="input" as={TextField} multiline rows={3} name="team_abilities_struggle" label="struggled with" />
                   <FastField type="input" as={TextField} multiline rows={3} name="team_abilities_cant" label="can't do" />
-                </Box>
+                </Box> */}
                 <Button type="submit" disabled={isSubmitting}>
                   Submit
                 </Button>

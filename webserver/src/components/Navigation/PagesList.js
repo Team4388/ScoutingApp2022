@@ -6,6 +6,7 @@ const PagesList = props => {
         <ul>
             <li><Link onClick={props.click} to="/Dashboard">Dashboard</Link></li>
             <li><Link onClick={props.click} to="/Input">Input</Link></li>
+            <li><Link onClick={props.click} to="/Notes">Notes</Link></li>
         </ul>
     )
 }

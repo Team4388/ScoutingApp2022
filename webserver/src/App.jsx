@@ -12,6 +12,7 @@ import WelcomePage from "./Pages/WelcomePage";
 import InputPage from "./Pages/InputPage";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ProcessedDataBucketProvider } from "./ProcessedDataBucketContext";
+import NotesPage from "./Pages/NotesPage";
 
 function App() {
   const darkTheme = createTheme({
@@ -43,6 +44,7 @@ function App() {
                 <Route path="/" element={<WelcomePage />} />
                 <Route path="/Dashboard" element={<DashboardPage />} />
                 <Route path="/Input" element={<InputPage />} />
+                <Route path="/Notes" element={<NotesPage />} />
                 <Route path="/404" element={<NotFoundPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
