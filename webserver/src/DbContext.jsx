@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useProcessedDataBucket } from "./ProcessedDataBucketContext";
 import { getProcessedDataBucket, updateProcessedDataBucket } from "./ProcessedDataBucket";
 
+PouchDB.plugin(require("delta-pouch"));
+
 const LocalDbContext = React.createContext();
 const RemoteDbContext = React.createContext();
 
@@ -16,32 +18,79 @@ export function useRemoteDb() {
 
 export function DbProvider({ children }) {
   // const pdbCtx = useProcessedDataBucket();
-  const { processedDataBucket, setProcessedDataBucket } = useProcessedDataBucket();
+  // const { setProcessedDataBucket } = useProcessedDataBucket();
   // console.log(pdb);
-  const [localdb, setLocaldb] = useState(new PouchDB("denver_fr"));
+  // const [localdb, setLocaldb] = useState(null);
+  // const [remotedb, setRemotedb] = useState(null);
+  // useEffect(() => {
+  //   // setDatabaseName("denver_fr", setLocaldb, setRemotedb, setProcessedDataBucket);
+  // });
+
+  const [localdb, setLocaldb] = useState(new PouchDB("utah_fr"));
   const [remotedb, setRemotedb] = useState(
-    new PouchDB("http://" + window.location.hostname + ":5984/denver_fr", {
-      skip_setup: true,
+    new PouchDB("http://" + window.location.hostname + ":5984/utah_fr", {
+      // skip_setup: true,
       auth: {
         username: "scouting",
         password: "Ridgebotics",
       },
     })
   );
-  localdb.replicate
-    .from(remotedb, {
+  localdb
+    // .setMaxListeners(400)
+    .sync(remotedb, {
+      // localdb
+      //   .sync(remotedb, {
       live: true,
       retry: true,
-    })
-    .on("change", (change) => {
-      updateProcessedDataBucket(localdb, setProcessedDataBucket);
     });
-  //   useEffect(()=>{
+  // const [syncHandle, setSyncHandle] = useState(
+  //   null
+  //   // localdb
+  //   //   // .setMaxListeners(400)
+  //   //   .sync(remotedb, {
+  //   //     // localdb
+  //   //     //   .sync(remotedb, {
+  //   //     live: true,
+  //   //     retry: true,
+  //   //   })
+  //   // .on("complete", (info) => {
+  //   //   console.log("REPLICATION CANCELLED");
+  //   //   console.log(info);
+  //   // })
+  // );
+  // if (syncHandle != null && typeof syncHandle.cancel !== "undefined") syncHandle.cancel();
+
+  // localdb.on("change", (change) => {
+  //   console.log("CHANGE");
+  //   updateProcessedDataBucket(localdb, setProcessedDataBucket);
+  // });
+
+  // .catch(console.log);
+  localdb.on("update", console.log);
+
+  useEffect(() => {
+    // handle.cancel();
+    console.log("SYNCSYNCSYNCSYNCSYNC");
+    // updateProcessedDataBucket(localdb, setProcessedDataBucket);
+    // localdb
+    //   // .setMaxListeners(400)
+    //   .sync(remotedb, {
+    //     // localdb
+    //     //   .sync(remotedb, {
+    //     live: true,
+    //     retry: true,
+    //   });
+    // .on("complete", (info) => {
+    //   console.log("REPLICATION CANCELLED");
+    //   console.log(info);
+    // })
+  }, [localdb, remotedb]);
+
+  // localdb.replicate.to(remotedb, {
+  //   retry: true,
+  // });
   // updateProcessedDataBucket(localdb, setProcessedDataBucket);
-  // }, [setProcessedDataBucket]);
-  //         localdb.replicate.to(remotedb, {
-  //           retry: true,
-  //         });
 
   // const [localNotesdb, setLocalNotesdb] = useState(new PouchDB("denver_notes"));
   // const [remoteNotesdb, setRemoteNotesdb] = useState(
@@ -61,7 +110,6 @@ export function DbProvider({ children }) {
   //   .on("change", (change) => {
   //     // updateProcessedDataBucket(localdb, setProcessedDataBucket);
   //   });
-
 
   // updateProcessedDataBucket(localdb, setProcessedDataBucket);
   // useEffect(() => {
@@ -116,19 +164,18 @@ export function setDatabaseName(name, setLocaldb, setRemotedb, setProcessedDataB
       password: "Ridgebotics",
     },
   });
-  localdb.replicate
-    .from(remotedb, {
-      live: true,
-      retry: true,
-    })
-    .on("change", (change) => {
-      updateProcessedDataBucket(localdb, setProcessedDataBucket);
-    });
-  updateProcessedDataBucket(localdb, setProcessedDataBucket);
-          localdb.replicate.to(remotedb, {
-            live: true,
-            retry: true,
-          });
+  localdb.sync(remotedb, {
+    live: true,
+    retry: true,
+  });
+  // .on("change", (change) => {
+  //   updateProcessedDataBucket(localdb, setProcessedDataBucket);
+  // });
+  // updateProcessedDataBucket(localdb, setProcessedDataBucket);
+  // localdb.replicate.to(remotedb, {
+  //   live: true,
+  //   retry: true,
+  // });
   setLocaldb(localdb);
   setRemotedb(remotedb);
 }

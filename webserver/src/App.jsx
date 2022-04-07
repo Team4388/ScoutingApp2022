@@ -9,7 +9,11 @@ import "./App.css";
 import NotFoundPage from "./Pages/NotFoundPage";
 import DashboardPage from "./Pages/DashboardPage/DashboardPage";
 import WelcomePage from "./Pages/WelcomePage";
+import SchedulePage from "./Pages/SchedulePage";
 import InputPage from "./Pages/InputPage";
+import TeamListPage from "./Pages/TeamListPage";
+import DevPage from "./Pages/DevPage";
+import TeamPage from "./Pages/TeamPage";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ProcessedDataBucketProvider } from "./ProcessedDataBucketContext";
 import NotesPage from "./Pages/NotesPage";
@@ -35,8 +39,8 @@ function App() {
   });
   return (
     <ThemeProvider theme={darkTheme}>
-      <ProcessedDataBucketProvider>
-        <DbProvider>
+      <DbProvider>
+        <ProcessedDataBucketProvider>
           <Router>
             <Navigation />
             <div className="App">
@@ -45,13 +49,17 @@ function App() {
                 <Route path="/Dashboard" element={<DashboardPage />} />
                 <Route path="/Input" element={<InputPage />} />
                 <Route path="/Notes" element={<NotesPage />} />
+                <Route path="/Schedule" element={<SchedulePage />} />
+                <Route path="/TeamList" element={<TeamListPage />} />
+                <Route path="/Dev" element={<DevPage />} />
+                <Route path="/Team" element={<TeamPage />} />
                 <Route path="/404" element={<NotFoundPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </div>
           </Router>
-        </DbProvider>
-      </ProcessedDataBucketProvider>
+        </ProcessedDataBucketProvider>
+      </DbProvider>
     </ThemeProvider>
   );
 }

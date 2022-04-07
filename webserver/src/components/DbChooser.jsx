@@ -9,11 +9,11 @@ const DbChooser = (props) => {
   const { processedDataBucket, setProcessedDataBucket } = useProcessedDataBucket();
 
   const [dbname, setDbName] = React.useState(localdb.name);
-  
-  const sync = useCallback(()=>{
+
+  const sync = useCallback(() => {
     localdb.sync(remotedb, {
       // live:true,
-      retry:true
+      retry: true,
     });
   }, [localdb, remotedb]);
 
@@ -25,21 +25,19 @@ const DbChooser = (props) => {
   });
   return (
     <div>
-      <Box sx={{ width: 400 }}>
+      {/* <Box sx={{ width: 400 }}>
         <FormControl fullWidth>
           <InputLabel>Database</InputLabel>
           <Select value={dbname} label="Database Name" onChange={handleChange}>
             <MenuItem value={"denver_practice"}>Denver Practice Matches</MenuItem>
             <MenuItem value={"denver_fr"}>Denver For Real</MenuItem>
-            {/* <MenuItem value={"utah_practice"}>Utah Practice Matches</MenuItem>
-            <MenuItem value={"utah_fr"}>Utah For Real</MenuItem> */}
+            <MenuItem value={"utah_practice"}>Utah Practice Matches</MenuItem>
+            <MenuItem value={"utah_fr"}>Utah For Real</MenuItem>
             <MenuItem value={"testdata"}>Test Data</MenuItem>
           </Select>
         </FormControl>
-                <Button onClick={sync}>
-                  Force Sync
-                </Button>
-      </Box>
+        <Button onClick={sync}>Force Sync</Button>
+      </Box> */}
     </div>
   );
 };

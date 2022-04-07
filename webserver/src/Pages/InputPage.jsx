@@ -33,6 +33,7 @@ const InputPage = () => {
         .put({
           // _id: new Date().toISOString(),
           _id: "match_" + values.match_number + "_team_" + values.team_number,
+          _rev: new Date().toISOString(),
           type: "match",
           ...values,
         })
