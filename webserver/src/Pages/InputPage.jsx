@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useLocalDb, useRemoteDb } from "../DbContext";
 import "./InputPage.css";
 import { Formik, FastField, Form } from "formik";
@@ -6,12 +6,9 @@ import InputNumberField from "../components/InputNumberField.jsx";
 import { TextField, Button, Grid, FormRow, Divider, Checkbox, Radio, FormControlLabel, FormControl, FormLabel, RadioGroup, IconButton, InputAdornment, Box } from "@mui/material";
 import { useProcessedDataBucket } from "../ProcessedDataBucketContext";
 import { getProcessedDataBucket, updateProcessedDataBucket } from "../ProcessedDataBucket";
+import { useLocation } from "react-router-dom";
 
 const InputPage = () => {
-  let { localdb, setLocaldb } = useLocalDb();
-  let { remotedb, setRemotedb } = useRemoteDb();
-  const { processedDataBucket, setProcessedDataBucket } = useProcessedDataBucket();
-
   let panel_sx = {
     display: "flex",
     flexDirection: { xs: "column", sm: "row" },
@@ -26,79 +23,115 @@ const InputPage = () => {
     boxShadow: 7,
   };
 
+  let { localdb, setLocaldb } = useLocalDb();
+  let { remotedb, setRemotedb } = useRemoteDb();
+  const { processedDataBucket, setProcessedDataBucket } = useProcessedDataBucket();
+  const location = useLocation();
+
+  let id = "";
+  if (location.state != null) {
+    id = location.state.id;
+  }
+  console.log(id);
+
+  const [oldDocExists, setOldDocExists] = useState(false);
+  const [oldDoc, setOldDoc] = useState(null);
   const onSubmit = useCallback(
+    // (old_doc, new_doc) => {
     (values, { setSubmitting, resetForm }) => {
-      // setTimeout(() => {
-      localdb
-        .put({
-          // _id: new Date().toISOString(),
-          _id: "match_" + values.match_number + "_team_" + values.team_number,
-          _rev: new Date().toISOString(),
-          type: "match",
-          ...values,
-        })
-        .then((result) => {
-          alert("Input Saved Successfully!");
-          console.log(result);
-          console.log(localdb);
-          localdb.replicate.to(remotedb, {
-            retry: true,
-          });
-        })
-        .catch((err) => {
-          console.log("Failed To Save Input!");
-          alert(err);
-        });
-      // alert(JSON.stringify(values, null, 2));
-      resetForm(); //Hah tobad
-      setSubmitting(false);
-      // }, 400);
-      updateProcessedDataBucket(localdb, setProcessedDataBucket);
+      if (oldDocExists && oldDoc.$id == values.$id) {
+        localdb
+          .saveChanges(oldDoc, values)
+          .then((result) => {
+            alert("Changes Saved Successfully!");
+            setSubmitting(false);
+          })
+          .then(localdb.sync(remotedb))
+          .catch(console.log);
+      } else {
+        localdb
+          .save(values)
+          .then((result) => {
+            alert("Saved Successfully!");
+            setSubmitting(false);
+          })
+          .then(localdb.sync(remotedb))
+          .catch(console.log);
+      }
     },
-    [localdb, remotedb, setProcessedDataBucket, updateProcessedDataBucket]
+    [localdb, oldDoc]
   );
+
+  useEffect(() => {
+    localdb.all().then((res) => {
+      let old_doc = {
+        $id: id,
+        fouls: "0",
+        fouls_tech: "0",
+        flipped: false,
+        red_cards: "0",
+        yellow_cards: "0",
+        disabled: false,
+        taxi_auto: false,
+        upper_hub_auto: "0",
+        lower_hub_auto: "0",
+        upper_hub_teleop: "0",
+        lower_hub_teleop: "0",
+        climb_level: "0",
+        alliance: "",
+        defence: "0",
+        disabled: false,
+      };
+      if (id != null && typeof res[id] !== "undefined") {
+        old_doc = res[id];
+        setOldDocExists(true);
+      }
+      setOldDoc(old_doc);
+    });
+  }, [setOldDoc]);
+
+  // const onSubmit = useCallback(
+  //   (values, { setSubmitting, resetForm }) => {
+  //     // setTimeout(() => {
+  //     localdb
+  //       .put({
+  //         // _id: new Date().toISOString(),
+  //         _id: "match_" + values.match_number + "_team_" + values.team_number,
+  //         _rev: new Date().toISOString(),
+  //         type: "match",
+  //         ...values,
+  //       })
+  //       .then((result) => {
+  //         alert("Input Saved Successfully!");
+  //         console.log(result);
+  //         console.log(localdb);
+  //         localdb.replicate.to(remotedb, {
+  //           retry: true,
+  //         });
+  //       })
+  //       .catch((err) => {
+  //         console.log("Failed To Save Input!");
+  //         alert(err);
+  //       });
+  //     // alert(JSON.stringify(values, null, 2));
+  //     resetForm(); //Hah tobad
+  //     setSubmitting(false);
+  //     // }, 400);
+  //     updateProcessedDataBucket(localdb, setProcessedDataBucket);
+  //   },
+  //   [localdb, remotedb, setProcessedDataBucket, updateProcessedDataBucket]
+  // );
+  if (oldDoc == null) return null;
+  console.log(oldDoc);
   return (
     <div>
       <br />
-      <Formik
-        initialValues={{
-          team_number: "",
-          match_number: "",
-          team_abilities_well: "",
-          team_abilities_struggle: "",
-          team_abilities_cant: "",
-          fouls: "0",
-          fouls_tech: "0",
-          flipped: false,
-          red_cards: "0",
-          yellow_cards: "0",
-          disabled: false,
-          taxi_auto: false,
-          upper_hub_auto: "0",
-          lower_hub_auto: "0",
-          upper_hub_teleop: "0",
-          lower_hub_teleop: "0",
-          climb_level: "0",
-          alliance: "",
-          defence: "0",
-          disabled: false,
-        }}
-        validateOnChange="false"
-        onSubmit={onSubmit}
-      >
+      <Formik initialValues={oldDoc} validateOnChange="false" onSubmit={onSubmit}>
         {({ values, setValues, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
           <Form>
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
               <Box sx={panel_sx}>
-                <FastField type="input" as={TextField} name="team_number" label="Team #" />
-                <FastField type="input" as={TextField} name="match_number" label="Match Number" />
-                <FormControl component="fieldset">
-                  <FormLabel component="legend">Alliance</FormLabel>
-                  <RadioGroup aria-label="Alliance" name="alliance" row>
-                    <FormControlLabel control={<FastField as={Radio} type="radio" name="alliance" value="red" sx={{ "&, &.Mui-checked": { color: "red_alliance" } }} />} sx={{ color: "red_alliance" }} label="Red" />
-                    <FormControlLabel control={<FastField as={Radio} type="radio" name="alliance" value="blue" sx={{ "&, &.Mui-checked": { color: "blue_alliance" } }} />} sx={{ color: "blue_alliance" }} label="Blue" />
-                  </RadioGroup>
-                </FormControl>
+                <FastField type="input" as={TextField} name="$id" label="Match Key" />
               </Box>
 
               <Box sx={panel_sx}>
@@ -157,7 +190,7 @@ const InputPage = () => {
                   <FastField type="input" as={TextField} multiline rows={3} name="team_abilities_cant" label="can't do" />
                 </Box> */}
                 <Button type="submit" disabled={isSubmitting}>
-                  Submit
+                  Save
                 </Button>
               </Box>
             </Box>

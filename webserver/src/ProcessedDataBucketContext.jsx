@@ -12,7 +12,8 @@ export function ProcessedDataBucketProvider({ children }) {
   //create the processed data bucket object
   const { localdb } = useLocalDb();
   const [processedDataBucket, setProcessedDataBucket] = useState(null);
-  localdb.on("change", (change) => {
+  localdb.delta.on("update", (changes) => {
+    // console.log("CHANGES");
     updateProcessedDataBucket(localdb, setProcessedDataBucket);
   });
   return <ProcessedDataBucketContext.Provider value={{ processedDataBucket, setProcessedDataBucket }}>{children}</ProcessedDataBucketContext.Provider>;

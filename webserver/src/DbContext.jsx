@@ -36,6 +36,7 @@ export function DbProvider({ children }) {
       },
     })
   );
+  localdb.deltaInit();
   localdb
     // .setMaxListeners(400)
     .sync(remotedb, {

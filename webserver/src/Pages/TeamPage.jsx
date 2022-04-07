@@ -31,7 +31,6 @@ const TeamPage = () => {
   const onSubmit = useCallback(
     // (old_doc, new_doc) => {
     (values, { setSubmitting, resetForm }) => {
-      localdb.on("update", console.log);
       localdb
         .saveChanges(oldDoc, values)
         .then((result) => {
@@ -56,7 +55,7 @@ const TeamPage = () => {
         misc_design: "",
       };
       if (typeof res[team] !== "undefined") {
-        old_doc = { ...res[team] };
+        old_doc = res[team];
       }
       setOldDoc(old_doc);
     });
