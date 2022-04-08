@@ -3,7 +3,7 @@ version: "3"
 
 services:
   scouting-webserver-nginx:
-    container_name: "production"
+    container_name: "nginx_prod"
     restart: unless-stopped
     env_file:
       - .env
@@ -15,5 +15,5 @@ services:
     ports:
       - "80:80/tcp"
     volumes:
-      - ./build:/usr/share/nginx/html
+      - ./webserver/build:/usr/share/nginx/html
       - ./webserver/nginx:/etc/nginx/:ro
