@@ -66,6 +66,7 @@ const InputPage = () => {
     localdb.all().then((res) => {
       let old_doc = {
         $id: id,
+        // type: "match",
         fouls: "0",
         fouls_tech: "0",
         flipped: false,

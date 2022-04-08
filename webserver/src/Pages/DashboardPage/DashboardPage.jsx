@@ -4,6 +4,7 @@ import { ProcessedDataBucketContext, useProcessedDataBucket } from "../../Proces
 import { DataGrid } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import AnalyticsPanel from "./AnalyticsPanel";
+import { getProcessedDataBucket, updateProcessedDataBucket } from "../../ProcessedDataBucket";
 
 //https://ag-grid.com/react-data-grid/
 import { AgGridReact } from "ag-grid-react";
@@ -31,7 +32,9 @@ const DashboardPage = () => {
   //     ],
   //   };
   // };
+  let {localdb} = useLocalDb();
   let { processedDataBucket, setProcessedDataBucket } = useProcessedDataBucket();
+    // updateProcessedDataBucket(localdb, setProcessedDataBucket);
 
   let rowData = [];
   if (processedDataBucket != null) {

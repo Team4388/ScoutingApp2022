@@ -1,10 +1,10 @@
 const processSchedule = (doc) => {};
 
-const createDefaultTeamData = (doc, teamData) => {
+const createDefaultTeamData = (team_number, teamData) => {
   //if there's no processed data on a team yet, create a default data entry
-  if (typeof teamData[doc.team_number] === "undefined") {
-    teamData[doc.team_number] = {
-      team_number: doc.team_number,
+  if (typeof teamData[team_number] === "undefined") {
+    teamData[team_number] = {
+      team_number: team_number,
       matches_played: 0,
       notes: [],
       data_sets: {
@@ -88,15 +88,26 @@ export function updateProcessedDataBucket(db, setProcessedDataBucket) {
           return;
         }
 
-        let thisTeamData = teamData[doc.team_number];
-        if (doc.type === "match") {
-          createDefaultTeamData(doc, teamData);
+        let first_two_letters = doc.$id.substring(0,2);
+        let is_a_match = first_two_letters === "qm"
+        || first_two_letters === "qf"
+        || first_two_letters === "sf"
+        || first_two_letters === "fi"
+        console.log(first_two_letters + is_a_match);
+
+        // if (doc.type === "match") {
+       if(is_a_match){ 
+        // if (doc.$id.substring(0,2)) {
+          let team_num = doc.$id.split("_")[1];
+          console.log(doc);
+          createDefaultTeamData(team_num, teamData);
+          let thisTeamData = teamData[team_num];
           processMatch(doc, thisTeamData);
         }
-        if (doc.type === "notes") {
-          createDefaultTeamData(doc, teamData);
-          thisTeamData.notes.push(doc.notes);
-        }
+        // if (doc.type === "notes") {
+        //   createDefaultTeamData(doc, teamData);
+        //   thisTeamData.notes.push(doc.notes);
+        // }
       });
       setProcessedDataBucket({ teamData: teamData, matchData: matchData });
     })

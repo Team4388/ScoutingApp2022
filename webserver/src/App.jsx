@@ -19,6 +19,7 @@ import { ProcessedDataBucketProvider } from "./ProcessedDataBucketContext";
 import NotesPage from "./Pages/NotesPage";
 
 function App() {
+  console.log("WHAT THE FUCK")
   const darkTheme = createTheme({
     // Theme settings
     palette: {

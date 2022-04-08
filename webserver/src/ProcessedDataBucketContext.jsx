@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect} from "react";
 import { useLocalDb } from "./DbContext.jsx";
 import { ProcessedDataBucket } from "./ProcessedDataBucket.jsx";
 import { getProcessedDataBucket, updateProcessedDataBucket } from "./ProcessedDataBucket";
@@ -16,5 +16,8 @@ export function ProcessedDataBucketProvider({ children }) {
     // console.log("CHANGES");
     updateProcessedDataBucket(localdb, setProcessedDataBucket);
   });
+  // useEffect(()=>{
+  //   updateProcessedDataBucket(localdb, setProcessedDataBucket);
+  // }, [setProcessedDataBucket]);
   return <ProcessedDataBucketContext.Provider value={{ processedDataBucket, setProcessedDataBucket }}>{children}</ProcessedDataBucketContext.Provider>;
 }
