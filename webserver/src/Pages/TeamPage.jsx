@@ -15,9 +15,9 @@ const TeamPage = () => {
 
   let panel_sx = {
     display: "flex",
-    flexDirection: { xs: "column", md: "row" },
-    alignItems: { xs: "center", sm: "center" },
-    justifyContent: { xs: "flex-start", sm: "center" },
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
     bgcolor: "background.paper",
     p: 2,
     m: 1,
@@ -52,6 +52,9 @@ const TeamPage = () => {
         drive_motors: "",
         wheels: "",
         climb_level: "",
+	which_hub: "",
+	shooter_type: "",
+	alignment_strategy: "",
         misc_design: "",
       };
       if (typeof res[team] !== "undefined") {
@@ -74,6 +77,9 @@ const TeamPage = () => {
               <FastField type="input" as={TextField} name="drive_motors" label="# of Drive Motors" />
               <FastField type="input" as={TextField} name="wheels" label="Wheels" />
               <FastField type="input" as={TextField} name="climb_level" label="Climb Level" />
+              <FastField type="input" as={TextField} name="which_hub" label="Which Hub" />
+              <FastField type="input" as={TextField} name="shooter_type" label="Shooter Type" />
+              <FastField type="input" as={TextField} name="alignment_strategy" label="Alignment Strat" />
               <FastField type="input" as={TextField} name="misc_design" label="Misc" />
             </Box>
             <Box sx={{ ...panel_sx, display: "flex", flexDirection: "column" }}>

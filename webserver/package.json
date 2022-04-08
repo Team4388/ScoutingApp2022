@@ -4,8 +4,6 @@
   "private": true,
   "dependencies": {
     "@blueprintjs/core": "^3.52.0",
-    "@data-driven-forms/blueprint-component-mapper": "^3.16.1",
-    "@data-driven-forms/react-form-renderer": "^3.16.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -41,8 +39,8 @@
     "workbox-streams": "^5.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts --max_old_space_size=4096 start",
+    "build": "react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
