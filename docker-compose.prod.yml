@@ -3,20 +3,20 @@ version: "3"
 services:
   scouting-webserver-prod:
     container_name: "production"
-    restart: unless-stopped
     env_file:
       - .env
     build:
       context: ./webserver
       dockerfile: ./Dockerfile.prod
-    expose:
-      - 80
-    ports:
-      - "80:80/tcp"
-      # - "80:80/tcp"
-      # - "443:443/tcp"
     volumes:
-      - ./webserver/nginx:/etc/nginx/:ro
+      - ./webserver:/app
+      # - ./webserver/build/:/app/build/
+      - ./webserver/build:/nooo/build
+      # - '/app/node_modules'
+      # - './webserver/public:/app/public/'
+      # - '/app/public/'
+      # - '/app/src/'
+      # - ./webserver/nginx:/etc/nginx/:ro
   # ssl-proxy:
   #   image: fsouza/docker-ssl-proxy
   #   ports:

@@ -10,4 +10,5 @@ RUN npm install
 RUN npm install react-scripts
 COPY . ./
 #USER node
+FROM nginx:1-alpine
 CMD ["npm", "start"]
