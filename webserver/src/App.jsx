@@ -14,6 +14,7 @@ import InputPage from "./Pages/InputPage";
 import TeamListPage from "./Pages/TeamListPage";
 import DevPage from "./Pages/DevPage";
 import TeamPage from "./Pages/TeamPage";
+import MatchPage from "./Pages/MatchPage";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ProcessedDataBucketProvider } from "./ProcessedDataBucketContext";
 import NotesPage from "./Pages/NotesPage";
@@ -54,6 +55,7 @@ function App() {
                 <Route path="/TeamList" element={<TeamListPage />} />
                 <Route path="/Dev" element={<DevPage />} />
                 <Route path="/Team" element={<TeamPage />} />
+                <Route path="/Match" element={<MatchPage />} />
                 <Route path="/404" element={<NotFoundPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>

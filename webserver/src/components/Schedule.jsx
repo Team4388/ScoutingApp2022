@@ -34,7 +34,8 @@ const Schedule = (props) => {
 
   const TeamNumberComponent = (props) => {
     return (
-      <Link to="/Input" state={{ id: props.match_id + "_" + props.number }} style={{ color: "inherit" }}>
+      // <Link to="/Input" state={{ id: props.match_id + "_" + props.number }} style={{ color: "inherit" }}>
+      <Link to="/Team" state={{ team: props.number }} style={{ color: "inherit" }}>
         <h3>{props.number}</h3>
       </Link>
     );
@@ -44,7 +45,16 @@ const Schedule = (props) => {
     // console.log(item);
     return (
       <Box sx={panel_sx} key={index}>
+      <Link to="/Match" state={{ teams: [
+        item.red[0],
+        item.red[1],
+        item.red[2],
+        item.blue[0],
+        item.blue[1],
+        item.blue[2],
+      ]}} style={{ color: "inherit" }}>
         <h3>{item.match_id}</h3>
+      </Link>
         <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: { xs: 0, sm: 1.5 }, color: "red_alliance", textDecoration: "none" }}>
           <TeamNumberComponent number={item.red[0]} match_id={item.match_id} />
           <TeamNumberComponent number={item.red[1]} match_id={item.match_id} />
